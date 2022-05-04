@@ -57,6 +57,41 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - images/login.png
+    - images/icons_interventions/means/moyenAerienActif.svg
+    - images/icons_interventions/means/moyenAerienPrevu.svg
+    - images/icons_interventions/means/moyensInterventionsGroupeActifs.svg
+    - images/icons_interventions/means/moyensInterventionsPrevu.svg
+    - images/icons_interventions/means/moyensInterventionsVehiculeSeul.svg
+    - images/icons_interventions/means/moyensInterventionVehiculeColonne.svg
+    - images/icons_interventions/arrows/arrow.svg
+    - images/icons_interventions/arrows/circleArrow.svg
+    - images/icons_interventions/arrows/curvedArrow.svg
+    - images/icons_interventions/arrows/curvedDottedArrow.svg
+    - images/icons_interventions/arrows/dottedArrow.svg
+    - images/icons_interventions/arrows/tripleArrow.svg
+    - images/icons_interventions/arrows/tripleArrowPleine.svg
+    - images/icons_interventions/icons_defensive/actionDefensivePlein.svg
+    - images/icons_interventions/icons_defensive/actionDefensiveVide.svg
+    - images/icons_interventions/icons_defensive/AvionBombardier.svg
+    - images/icons_interventions/icons_defensive/defensifPerimetralPlein.svg
+    - images/icons_interventions/icons_defensive/defensifPerimetralVide.svg
+    - images/icons_interventions/icons_defensive/helicoBombardier.svg
+    - images/icons_interventions/water_points/Pointderavitaillement.svg
+    - images/icons_interventions/water_points/Priseeaunonperenne.svg
+    - images/icons_interventions/water_points/Priseeauperenne.svg
+    - images/icons_interventions/centers/CentreCommandement.svg
+    - images/icons_interventions/centers/CentreCommandementPointille.svg
+    - images/icons_interventions/centers/CRM.svg
+    - images/icons_interventions/others/NonSPactif.svg
+    - images/icons_interventions/others/NonSPprevu.svg
+    - images/icons_interventions/others/pointdeTransit.svg
+    - images/icons_interventions/others/sectorisationFonctionnelle.svg
+    - images/icons_interventions/others/SourcededangerPointssensible.svg
+    - images/icons_interventions/others/ZACible.svg
+    - images/icons_interventions/others/ZAEtoile.svg
+    - images/icons_interventions/others/ZAExp.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
