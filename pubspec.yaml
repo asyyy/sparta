@@ -37,6 +37,8 @@ dependencies:
   flutter_lints: ^1.0.0
   loading_animations: ^2.1.0
   flutter_map: ^0.14.0
+  geocoding: ^2.0.4
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:
