@@ -19,8 +19,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child : Center(
-            child: Text("login page")
+        child : Row(
+          children: [
+            Column (
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                 Image.asset(
+
+                    'images/login.png',
+                  ),
+                  Text ("loginpage"),
+                ]
+            ),
+            Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text ("loginpage"),
+                ]
+            ),
+          ],
         )
     );
   }
