@@ -1,10 +1,26 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
+/// Example of use in a Stateful Widget :
+
+/// _getPosition() {
+///   GeoLoc.getCurrentPosition().then((response) {
+///     print("Response " + response.toString());
+///     setState(() {
+///        my_lat = response.latitude;
+///        my_long = response.longitude;
+///     });
+///
+///   });
+/// }
+
+
+
 /// Geolocation static methods
 class GeoLoc{
 
   /// Get location from full address
+  /// Returns the Location or Null otherwise
   static Future<Location?> getLocationFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
@@ -20,6 +36,7 @@ class GeoLoc{
   }
 
   /// Get address from latitude and longitude
+  /// Returns the Placemark or Null otherwise
   static Future<Placemark?> getAddressFromLocation(double lat, double long) async {
     try {
       List<Placemark> place_marks = await placemarkFromCoordinates(lat, long);
@@ -35,6 +52,7 @@ class GeoLoc{
   }
 
   /// Get current position
+  /// Returns the Position or Null otherwise
   static Future<Position?> getCurrentPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
