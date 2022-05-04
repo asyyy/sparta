@@ -1,33 +1,15 @@
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-
-/// Example of use in a Stateful Widget :
-
-/// _getPosition() {
-///   GeoLoc.getCurrentPosition().then((response) {
-///     print("Response " + response.toString());
-///     setState(() {
-///        my_lat = response.latitude;
-///        my_long = response.longitude;
-///     });
-///
-///   });
-/// }
-
-
 
 /// Geolocation static methods
-class GeoLoc{
-
+class GeoLoc {
   /// Get location from full address
   /// Returns the Location or Null otherwise
   static Future<Location?> getLocationFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
-      if (locations.isNotEmpty){
+      if (locations.isNotEmpty) {
         return locations.first;
-      }
-      else{
+      } else {
         print("No coordinates found for the given address.");
         return null;
       }
@@ -39,13 +21,13 @@ class GeoLoc{
 
   /// Get address from latitude and longitude
   /// Returns the Placemark or Null otherwise
-  static Future<Placemark?> getAddressFromLocation(double lat, double long) async {
+  static Future<Placemark?> getAddressFromLocation(
+      double lat, double long) async {
     try {
       List<Placemark> place_marks = await placemarkFromCoordinates(lat, long);
-      if (place_marks.isNotEmpty){
+      if (place_marks.isNotEmpty) {
         return place_marks.first;
-      }
-      else{
+      } else {
         print("No address found for the given coordinates.");
         return null;
       }
@@ -77,7 +59,8 @@ class GeoLoc{
     }
 
     if (permission == LocationPermission.deniedForever) {
-      print('Location permissions are permanently denied, we cannot request permissions.');
+      print(
+          'Location permissions are permanently denied, we cannot request permissions.');
       return null;
     }
     return await Geolocator.getCurrentPosition();
