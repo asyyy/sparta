@@ -1,4 +1,5 @@
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 /// Geolocation static methods
 class GeoLoc {
@@ -38,7 +39,10 @@ class GeoLoc {
   }
 
   /// Get current position
+<<<<<<< HEAD
   /// Returns the Position or Null otherwise
+=======
+>>>>>>> Add method to get current location to geoloc_services.dart
   static Future<Position?> getCurrentPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -59,10 +63,18 @@ class GeoLoc {
     }
 
     if (permission == LocationPermission.deniedForever) {
+<<<<<<< HEAD
       print(
           'Location permissions are permanently denied, we cannot request permissions.');
+=======
+      print('Location permissions are permanently denied, we cannot request permissions.');
+>>>>>>> Add method to get current location to geoloc_services.dart
       return null;
     }
     return await Geolocator.getCurrentPosition();
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Add method to get current location to geoloc_services.dart
