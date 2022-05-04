@@ -28,9 +28,11 @@ class GeoLoc{
         return locations.first;
       }
       else{
+        print("No coordinates found for the given address.");
         return null;
       }
     } on Exception catch (_) {
+      print("Error during address conversion.");
       return null;
     }
   }
@@ -44,9 +46,11 @@ class GeoLoc{
         return place_marks.first;
       }
       else{
+        print("No address found for the given coordinates.");
         return null;
       }
     } on Exception catch (_) {
+      print("Error during address conversion.");
       return null;
     }
   }
