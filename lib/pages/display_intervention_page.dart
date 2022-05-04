@@ -17,9 +17,25 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool draw = false;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void startDraw(){
+    setState(() {
+      draw = true;
+      print("Start drawing");
+    });
+  }
+
+  void stopDraw(){
+    setState(() {
+      draw = false;
+      print("Stop drawing");
+    });
   }
 
   @override
@@ -78,10 +94,17 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                       //SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
                       GestureDetector(
                           onTap: () {
-                            print("Click : Draw");
+                            if (draw){
+                              stopDraw();
+                            }
+                            else{
+                              startDraw();
+                            }
+
                           },
-                          child: const Card(
-                            child: ListTile(
+                          child: Card(
+                            color: draw == true ? Colors.grey : Colors.white,
+                            child: const ListTile(
                                 title: Text("Dessiner"),
                                 trailing: Icon(Icons.border_color_outlined)),
                             margin: EdgeInsets.only(bottom: 5),
