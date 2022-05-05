@@ -38,6 +38,8 @@ dependencies:
   loading_animations: ^2.1.0
   flutter_map: ^0.14.0
   responsive: ^0.3.11+11
+  geocoding: ^2.0.4
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:
