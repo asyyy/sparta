@@ -134,13 +134,18 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
 
   void computeMarker(){
     print("Add new marker");
+    Map marker_values = {};
+    marker_values["type"] = _markerTypeController;
+    marker_values["color"] = _markerColorController;
+    marker_values["size"] = _markerSizeController;
+
     map_markers.add(Marker(
-      width: _markerSizeController,
-      height: _markerSizeController,
+      width: marker_values["size"],
+      height: marker_values["size"],
       point: tapHistory.last,
       builder: (ctx) =>
           Container(
-            child: Icon(_markerTypeController, color: _markerColorController, size: _markerSizeController),
+            child: Icon(marker_values["type"], color: marker_values["color"], size: marker_values["size"]),
           ),
     ));
     setState(() {
