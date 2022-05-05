@@ -189,6 +189,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                                     "7 Rue Claude Chappe, 35510 Cesson-Sévigné"),
                                 trailing: Text("2:32")),
                           )),
+
                       GestureDetector(
                           onTap: () {
                             print("Click : Tableau des moyens");
@@ -197,7 +198,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                               child: ListTile(
                                   title: Text("Tableau des moyens"),
                                   trailing: Icon(
-                                      Icons.arrow_circle_right_outlined)))),
+                                      Icons.arrow_circle_right_outlined)))
+                      ),
                       GestureDetector(
                           onTap: () {
                             print("Click : Drone view");
