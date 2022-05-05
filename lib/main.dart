@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/pages/display_intervention_page.dart';
-import 'package:flutter/services.dart';
 import 'globals.dart' as globals;
 
 void main() async {
@@ -16,7 +15,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
     return MaterialApp(
       title: 'Flutter app',
       debugShowCheckedModeBanner: false,
