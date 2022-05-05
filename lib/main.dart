@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 import 'package:projet_groupe_c/pages/new_intervention_page.dart';
+import 'globals.dart' as globals;
 
-void main() async{
+void main() async {
+  globals.token = '';
   runApp(const MyApp());
 }
 
