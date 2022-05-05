@@ -1,6 +1,19 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
+/// Example of use in a Stateful Widget :
+
+/// _getPosition() {
+///   GeoLoc.getCurrentPosition().then((response) {
+///     print("Response " + response.toString());
+///     setState(() {
+///        my_lat = response.latitude;
+///        my_long = response.longitude;
+///     });
+///
+///   });
+/// }
+
 /// Geolocation static methods
 class GeoLoc {
   /// Get location from full address
