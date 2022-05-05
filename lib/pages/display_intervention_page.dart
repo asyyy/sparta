@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 
 import 'package:projet_groupe_c/pages/loading_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
@@ -20,7 +21,7 @@ class DisplayIntervention extends StatefulWidget {
 
 class _DisplayInterventionState extends State<DisplayIntervention> {
   late AppBar appBar;
-  late final MapController mapController;
+  late final MapController mapController ;
   @override
   void initState() {
     super.initState();
@@ -50,6 +51,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         )
       ],
     );
+    mapController = MapController();
   }
 
   @override
@@ -91,19 +93,21 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
+                  height: MediaQuery.of(context).size.height,
                   child: FlutterMap(
-                    mapController: mapController,
                     options: MapOptions(
                       center: LatLng(48.117266, -1.6777926),
-                      zoom: 10,  ),  children: <Widget>[
-                    TileLayerWidget(
-                      options: TileLayerOptions(
-                        urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: ['a', 'b', 'c'],
-                      ),
+                      zoom: 10,
                     ),
-                  ],
+                    children: <Widget>[
+                      TileLayerWidget(
+                        options: TileLayerOptions(
+                          urlTemplate:
+                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          subdomains: ['a', 'b', 'c'],
+                        ),
+                      ),
+                    ],
                   )
                 ),
               ],
