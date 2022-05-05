@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive/responsive.dart';
+import '../services/api_services.dart';
 
 import 'display_intervention_page.dart';
 
@@ -22,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    String username = "";
+    String password = "";
     return Material(
         child: ResponsiveRow(
       children: [
@@ -59,6 +62,9 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            onSaved: (value) {
+                              username = value!;
+                            },
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'User Name',
@@ -74,6 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            onSaved: (value) {
+                              password = value!;
+                            },
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password',
@@ -92,12 +101,22 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const DisplayIntervention()))
-                                  //ScaffoldMessenger.of(context).showSnackBar (const SnackBar(content: Text('Processing Data')),)
+                                  _formKey.currentState!.save(),
+                                  ApiService.login(username, password)
+                                      .then((value) => {
+                                            if (value == '')
+                                              {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            const DisplayIntervention()))
+                                              }
+                                            else
+                                              {
+                                                // TODO : afficher un message d'erreur equivalent a value
+                                              }
+                                          })
                                 }
                               else
                                 {
