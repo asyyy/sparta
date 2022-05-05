@@ -9,11 +9,21 @@ import '../globals.dart' as globals;
 /// Based on Back End Project
 class ApiService {
   static Future getData() async {
-    return http.get(Uri.parse(ApiUrl + "/" + ApiCollection));
+    return http.get(Uri.parse(ApiUrl + "/" + ApiCollection),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'token': globals.token
+        });
   }
 
   static Future getInterventionById(String id) {
-    return http.get(Uri.parse(ApiUrl + "/" + ApiCollection + "/" + id));
+    return http.get(
+      Uri.parse(ApiUrl + "/" + ApiCollection + "/" + id),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': globals.token
+      },
+    );
   }
 
   static Future<bool> postIntervention(InterventionModel intervention) async {
@@ -57,9 +67,12 @@ class ApiService {
   static Future<bool> deleteIntervention(InterventionModel intervention) async {
     bool tmpResult = false;
 
-    await http
-        .delete(Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id))
-        .then((value) {
+    await http.delete(
+        Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'token': globals.token
+        }).then((value) {
       tmpResult = true;
     }).catchError((docSnapshot) {
       tmpResult = false;
