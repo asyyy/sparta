@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive/responsive.dart';
 
@@ -55,55 +54,63 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height * 0.35,
                     child: Column(
                       children: [
-                        TextFormField(
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'User Name',
-                              hintText: 'Enter your user name'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "TEXT_REQUIRED";
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Password',
-                              hintText: 'Enter your secure password'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "TEXT_REQUIRED";
-                            }
-                            return null;
-                          },
-                        ),
-                        ElevatedButton(
-                          onPressed: () => {
-                            if (_formKey.currentState!.validate())
-                              {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            const DisplayIntervention()))
-                                //ScaffoldMessenger.of(context).showSnackBar (const SnackBar(content: Text('Processing Data')),)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'User Name',
+                                hintText: 'Enter your user name'),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "TEXT_REQUIRED";
                               }
-                            else
-                              {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Processing Data')),
-                                )
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Password',
+                                hintText: 'Enter your secure password'),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "TEXT_REQUIRED";
                               }
-                          },
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () => {
+                              if (_formKey.currentState!.validate())
+                                {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const DisplayIntervention()))
+                                  //ScaffoldMessenger.of(context).showSnackBar (const SnackBar(content: Text('Processing Data')),)
+                                }
+                              else
+                                {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Processing Data')),
+                                  )
+                                }
+                            },
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         )
                       ],
