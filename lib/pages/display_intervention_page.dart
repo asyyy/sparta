@@ -2,6 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 import 'package:projet_groupe_c/pages/loading_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 import 'package:projet_groupe_c/pages/new_intervention_page.dart';
@@ -17,6 +20,7 @@ class DisplayIntervention extends StatefulWidget {
 
 class _DisplayInterventionState extends State<DisplayIntervention> {
   late AppBar appBar;
+  late final MapController mapController;
   @override
   void initState() {
     super.initState();
@@ -87,7 +91,20 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  child: Text("hello"),
+                  child: FlutterMap(
+                    mapController: mapController,
+                    options: MapOptions(
+                      center: LatLng(48.117266, -1.6777926),
+                      zoom: 10,  ),  children: <Widget>[
+                    TileLayerWidget(
+                      options: TileLayerOptions(
+                        urlTemplate:
+                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: ['a', 'b', 'c'],
+                      ),
+                    ),
+                  ],
+                  )
                 ),
               ],
             ),
