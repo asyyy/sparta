@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/model/intervention.dart';
+import 'package:projet_groupe_c/model/user.dart';
 import '../assets/api_constants.dart';
 import 'package:http/http.dart' as http;
 import '../globals.dart' as globals;
@@ -109,8 +110,8 @@ class ApiService {
   }
 
 //Fonction de logout a brancher au front
-//Return true sur un succes, et reset le token global
-// Return false sur un echec
+//Return '' sur un succes, et reset le token global
+// Return le message d'erreur sur un echec
   static Future<String> logout() async {
     String tmpResult = '';
 
@@ -126,6 +127,33 @@ class ApiService {
         .then((value) {
       if (value.statusCode == 200) {
         globals.token = '';
+        tmpResult = '';
+      } else {
+        tmpResult = value.body;
+      }
+    }).catchError((docSnapshot) {
+      tmpResult = 'Erreur de connexion';
+    });
+    return tmpResult;
+  }
+
+//Fonction de creation user a brancher au front
+//Return true sur un succes
+// Return false sur un echec
+  static Future<String> createUser(UserModel user) async {
+    String tmpResult = '';
+
+    await http
+        .post(
+      Uri.parse(ApiUrl + "/" + User),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': globals.token
+      },
+      body: jsonEncode(user.toJson()),
+    )
+        .then((value) {
+      if (value.statusCode == 200) {
         tmpResult = '';
       } else {
         tmpResult = value.body;
