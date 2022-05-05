@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projet_groupe_c/pages/loading_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 import 'package:projet_groupe_c/pages/new_intervention_page.dart';
 
@@ -82,9 +83,35 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
             ),
           ),
           Column(children: [
-            Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: Text("hello")),
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Text("hello"),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: ElevatedButton(
+                    onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                        const LoadingPage()))
+                        },
+                    child: const Text(
+                      "Rejoindre l'intervention",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+
+                  ),
+                ),
+              ],
+            ),
           ]),
         ],
       ),
