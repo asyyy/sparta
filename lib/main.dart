@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/pages/display_intervention_page.dart';
 import 'globals.dart' as globals;
 
-void main() async {
+void main() async{
   globals.token = '';
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
   runApp(const MyApp());
 }
 
