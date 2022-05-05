@@ -93,7 +93,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height-appBar.preferredSize.height-75,
                   child: FlutterMap(
                     options: MapOptions(
                       center: LatLng(48.117266, -1.6777926),
