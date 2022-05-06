@@ -13,13 +13,13 @@ import 'package:projet_groupe_c/pages/new_intervention_page.dart';
 ///
 /// Widget that allows display intervention
 ///
-class DisplayIntervention extends StatefulWidget {
-  const DisplayIntervention({Key? key}) : super(key: key);
+class ListIntervention extends StatefulWidget {
+  const ListIntervention({Key? key}) : super(key: key);
   @override
-  _DisplayInterventionState createState() => _DisplayInterventionState();
+  _ListInterventionState createState() => _ListInterventionState();
 }
 
-class _DisplayInterventionState extends State<DisplayIntervention> {
+class _ListInterventionState extends State<ListIntervention> {
   late AppBar appBar;
   late final MapController mapController ;
   @override
@@ -63,7 +63,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child:
-                Column(
+            Column(
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -92,23 +92,23 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.height-appBar.preferredSize.height-75,
-                  child: FlutterMap(
-                    options: MapOptions(
-                      center: LatLng(48.117266, -1.6777926),
-                      zoom: 10,
-                    ),
-                    children: <Widget>[
-                      TileLayerWidget(
-                        options: TileLayerOptions(
-                          urlTemplate:
-                          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: ['a', 'b', 'c'],
-                        ),
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    height: MediaQuery.of(context).size.height-appBar.preferredSize.height-75,
+                    child: FlutterMap(
+                      options: MapOptions(
+                        center: LatLng(48.117266, -1.6777926),
+                        zoom: 10,
                       ),
-                    ],
-                  )
+                      children: <Widget>[
+                        TileLayerWidget(
+                          options: TileLayerOptions(
+                            urlTemplate:
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            subdomains: ['a', 'b', 'c'],
+                          ),
+                        ),
+                      ],
+                    )
                 ),
               ],
             ),
@@ -118,12 +118,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
                     onPressed: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                        const LoadingPage()))
-                        },
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                              const LoadingPage()))
+                    },
                     child: const Text(
                       "Rejoindre l'intervention",
                       style: TextStyle(fontWeight: FontWeight.bold),
