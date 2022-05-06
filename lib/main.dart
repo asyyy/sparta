@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:projet_groupe_c/pages/list_intervention_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 
 void main() async{
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: ListIntervention(),
     );
   }
 }
