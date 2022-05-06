@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -9,6 +11,9 @@ import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 import 'package:projet_groupe_c/pages/loading_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 import 'package:projet_groupe_c/pages/new_intervention_page.dart';
+import '../services/interventions_service.dart';
+
+import '../model/intervention.dart';
 
 ///
 /// Widget that allows display intervention
@@ -19,12 +24,29 @@ class ListIntervention extends StatefulWidget {
   _ListInterventionState createState() => _ListInterventionState();
 }
 
+
 class _ListInterventionState extends State<ListIntervention> {
+
   late AppBar appBar;
   late final MapController mapController ;
+  late List<InterventionModel> interventions = [];
+
+  _getInterventions(){
+  InterventionsService.getData().then((response) {
+      setState(() {
+        interventions = InterventionsService.getInterventionsFromJSON(json.decode(response.body));
+      });
+    });
+    print("iciiiiii" + interventions.toString());
+  }
+
+
+
+
   @override
   void initState() {
     super.initState();
+    _getInterventions();
     appBar = AppBar(
       title: const Text("Interventions"),
       leading: IconButton(
@@ -71,13 +93,13 @@ class _ListInterventionState extends State<ListIntervention> {
                       appBar.preferredSize.height,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: 20,
+                    itemCount: interventions.length,
                     itemBuilder: (context, position) {
                       return Card(
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
-                            position.toString(),
+                            interventions[position].label,
                             style: TextStyle(fontSize: 22.0),
                           ),
                         ),
