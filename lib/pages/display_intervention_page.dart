@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 
 
+
 ///
 /// Widget that allows display intervention
 ///
@@ -146,12 +147,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
       point: tapHistory.last,
       builder: (ctx) =>
           GestureDetector(
-            onTap: () {
-    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-    content: Text('Tapped on '+marker_values.toString()+' Marker '),
-    ));
-    }, child :
-          Container(
+            onTap: () {print("TAPPED : Tap on marker" );},
+              child : Container(
             child: Icon(marker_values["type"], color: marker_values["color"], size: marker_values["size"]),
           )),
     ));
@@ -406,8 +403,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               child: Scaffold(
                   resizeToAvoidBottomInset: true,
                   body: ListView(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                     children: <Widget>[
                       GestureDetector(
                           onTap: () {
@@ -426,66 +422,71 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                                       return Text((hours < 10 ? "0"+hours.toString() : hours.toString())+ ':' + (minutes < 10 ? "0"+minutes.toString() : minutes.toString()), style: const TextStyle(fontWeight: FontWeight.bold));
                                     })),
                           )),
-
-                      GestureDetector(
-                          onTap: () {
-                            print("Click : Tableau des moyens");
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.table_chart_outlined),
+                          tooltip: 'Tableau des moyens',
+                          onPressed: () {
+                              print("Click : Tableau des moyens");
                           },
-                          child: const Card(
-                              child: ListTile(
-                                  title: Text("Tableau des moyens"),
-                                  trailing: Icon(
-                                      Icons.arrow_circle_right_outlined)))
+                        ),
+                          IconButton(
+                          icon: const Icon(Icons.airplanemode_on),
+                          tooltip: 'Vue drone',
+                          onPressed: () {
+                              print("Click : Tableau des moyens");
+                          },
+                        ),
+                          IconButton(
+                          icon: const Icon(Icons.format_list_bulleted),
+                          tooltip: 'Liste des interventions',
+                          onPressed: () {
+                              print("Click : Liste des interventions");
+                          },
+                        ),
+                          IconButton(
+                            icon: Icon(mapCapture == true ? Icons.download_done : Icons.border_color_outlined),
+                            color: mapCapture == true ? Colors.green : Colors.black,
+                            tooltip: 'Dessiner',
+                            onPressed: () {
+                              print("Click : Dessiner");
+                              if (mapCapture){
+                                stopCapture();
+                              }
+                              else{
+                                openDrawPopup();
+                              }
+                            },
+                          ),
+                          Visibility(
+                            child: IconButton(
+                              icon: Icon(Icons.delete_outlined),
+                              color: Colors.red,
+                              tooltip: 'Supprimer',
+                              onPressed: () {
+                                print("Click : Remove");
+                                if (mapCapture){
+                                  cancelCapture();
+                                }
+                              },
+                            ),
+                            visible: mapCapture,
+                          ),
+                        ],
                       ),
-                      GestureDetector(
-                          onTap: () {
-                            print("Click : Drone view");
-                          },
-                          child: const Card(
-                              child: ListTile(
-                                  title: Text("Vue drone"),
-                                  trailing: Icon(
-                                      Icons.arrow_circle_right_outlined)))),
-                      GestureDetector(
-                          onTap: () {
-                            print("Click : Interventions list");
-                          },
-                          child: const Card(
-                              child: ListTile(
-                                  title: Text("Liste des interventions"),
-                                  trailing: Icon(
-                                      Icons.arrow_circle_right_outlined)))),
                       //SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
                       GestureDetector(
                           onTap: () {
-                            if (mapCapture){
-                              stopCapture();
-                            }
-                            else{
-                              openDrawPopup();
-                            }
+                            print("TAPPED : Retour");
                           },
-                          onLongPress: () {
-                            if (mapCapture){
-                              cancelCapture();
-                            }
-                          },
-                          child: Card(
-                            color: mapCapture == true ? Colors.grey[200] : Colors.white,
-                            child: ListTile(
-                                title: Text("Dessiner", style: TextStyle(fontWeight: mapCapture == true ? FontWeight.bold : FontWeight.normal)),
-                                subtitle: mapCapture == true ? const Text("Appuyer longtemps pour annuler") : null,
-                                trailing: Icon(mapCapture == true ? Icons.border_color : Icons.border_color_outlined)),
-                            margin: const EdgeInsets.only(bottom: 5),
-                          )),
-                      //SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
-                      GestureDetector(
-                          onTap: () {
-                            print("Click : Retour");
-                          },
-                          child: Card(
+                          child:
+                          Visibility(
+                            visible: false,
+                              child:Card(
                             child: getCurrentForm(),
-                          )),
+                          ))),
                     ],
                   ))),
         ),
@@ -494,6 +495,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           child: FlutterMap(
             mapController: mapController,
             options: MapOptions(
+              plugins: [],
               center: LatLng(48.117266, -1.6777926),
               zoom: 10,
               onTap: _handleTap
@@ -504,7 +506,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               ),
               PolylineLayerOptions(
                 polylines: map_displayed_polylines,
-              )
+              ),
             ],
             children: <Widget>[
               TileLayerWidget(
