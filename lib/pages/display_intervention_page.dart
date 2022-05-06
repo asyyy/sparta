@@ -45,7 +45,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
 
   List<Map> availableColors = [
     {'name': 'Rouge', 'value': Colors.red},
-    {'name': 'vert', 'value': Colors.green},
+    {'name': 'Vert', 'value': Colors.green},
     {'name': 'Bleu', 'value': Colors.blue},
     {'name': 'Noir', 'value': Colors.black},
   ];
@@ -291,7 +291,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   initialValue: _markerSizeController.toString(),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    _markerSizeController = double.parse(value);
+                    try {
+                      _markerSizeController = double.parse(value);
+                    }
+                    catch (_) {
+                      print("Conversion error"); //String is not an Integer
+                    }
                   },
                   decoration: const InputDecoration(
                     labelText: 'Taille',
