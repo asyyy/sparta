@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 
+
 ///
 /// Widget that allows display intervention
 ///
@@ -144,9 +145,15 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
       height: marker_values["size"],
       point: tapHistory.last,
       builder: (ctx) =>
+          GestureDetector(
+            onTap: () {
+    ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+    content: Text('Tapped on '+marker_values.toString()+' Marker '),
+    ));
+    }, child :
           Container(
             child: Icon(marker_values["type"], color: marker_values["color"], size: marker_values["size"]),
-          ),
+          )),
     ));
     setState(() {
       map_markers;
