@@ -93,7 +93,7 @@ class _ListInterventionState extends State<ListIntervention> {
               children: [
                 Container(
                     width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height-appBar.preferredSize.height-75,
+                    height: MediaQuery.of(context).size.height*0.85-appBar.preferredSize.height,
                     child: FlutterMap(
                       options: MapOptions(
                         center: LatLng(48.117266, -1.6777926),
@@ -116,19 +116,23 @@ class _ListInterventionState extends State<ListIntervention> {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 0.5,
-                  child: ElevatedButton(
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) =>
-                              const LoadingPage()))
-                    },
-                    child: const Text(
-                      "Rejoindre l'intervention",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                  height: MediaQuery.of(context).size.height*0.1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom : 0.0, right: 30.0, left: 30.0),
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                const LoadingPage()))
+                      },
+                      child: const Text(
+                        "Rejoindre l'intervention",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
 
+                    ),
                   ),
                 ),
               ],
