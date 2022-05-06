@@ -479,6 +479,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                           ),
                         ],
                       ),
+                      const Divider(color: Colors.black),
                       //SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
                       GestureDetector(
                           onTap: () {
