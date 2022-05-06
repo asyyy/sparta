@@ -410,6 +410,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                             print("Click : Header");
                           },
                           child: Card(
+                            elevation: 0,
+                            color: Colors.transparent,
                             child: ListTile(
                                 title: const Text("Feu Capgemini Rennes"),
                                 subtitle: const Text("7 Rue Claude Chappe, 35510 Cesson-Sévigné"),
@@ -422,6 +424,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                                       return Text((hours < 10 ? "0"+hours.toString() : hours.toString())+ ':' + (minutes < 10 ? "0"+minutes.toString() : minutes.toString()), style: const TextStyle(fontWeight: FontWeight.bold));
                                     })),
                           )),
+                      const Divider(color: Colors.black),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
