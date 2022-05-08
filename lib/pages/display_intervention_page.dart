@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
+import 'package:projet_groupe_c/model/vehicles.dart';
+import 'package:projet_groupe_c/pages/error_page.dart';
+import 'package:projet_groupe_c/pages/loading_page.dart';
+import 'dart:math';
+import '../model/intervention.dart';
+import '../model/symbol.dart';
+import '../services/api_services_emulator.dart';
 
 
 
@@ -17,8 +24,12 @@ class DisplayIntervention extends StatefulWidget {
 
 class _DisplayInterventionState extends State<DisplayIntervention> {
 
+  ApiServiceEmulator apiEmulator = ApiServiceEmulator();
+
   // Initialize map controller
   late final MapController mapController;
+
+  late InterventionModel intervention;
 
   // Size of the left panel
   final int leftPaneProportion = 30;
@@ -27,7 +38,6 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
   int interventionDuration = 7200;
 
   // Map settings
-  List<Marker> map_markers = [];
   List<Polyline> map_polylines = [];
 
   // Temp map markers and lines (not send to bdd)
@@ -62,19 +72,38 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
 
   // ---- START NEW MARKER SECTION ----- //
   final _markerFormKey = GlobalKey<FormState>();
+
   String _markerLabelController = "";
-  IconData _markerTypeController = Icons.directions_car;
-  int _markerRotationController = 0;
+  int _markerTypeController = 0;
+  double _markerRotationController = 0.0;
   double _markerSizeController = 30.0;
-  Color _markerColorController = Colors.red;
+  int _markerSinisterTypeController = 0;
 
   List<Map> availableVehicles = [
-    {'name': 'Voiture', 'value': Icons.directions_car},
-    {'name': 'Camion', 'value': Icons.local_shipping},
+    {'name': 'Petit Camion', 'value': 0},
+    {'name': 'Camion', 'value': 1},
+  ];
+
+  List<Map> availableSymbols = [
+    {'name': 'Cercle de fleche', 'value': 0},
+    {'name': 'Fleche courbée', 'value': 1},
+  ];
+
+  List<Map> availableSinisterType = [
+    {'name': 'Feu', 'value': 0},
+    {'name': 'Accident', 'value': 1},
+    {'name': 'Gaz', 'value': 2},
   ];
 
   // ---- END NEW MARKER SECTION ----- //
 
+
+  // ---- END SETTINGS SECTION ----- //
+  bool hideSettings = true;
+  late Object lastTappedElement;
+  bool userEdit = false;
+
+  // ---- END SETTINGS SECTION ----- //
 
   @override
   void initState() {
@@ -83,6 +112,9 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
   }
 
   void _handleTap(TapPosition tapPosition, LatLng latlng) {
+    if (userEdit){
+      return;
+    }
     print("Tap " + latlng.toString());
     tapHistory.add(latlng);
     if (mapCapture){
@@ -98,8 +130,30 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
     }
     else{
       print("Add new marker");
-      openMarkerPopup();
+      openNewMarkerPopup();
     }
+  }
+
+  markerListener(Object v){
+    lastTappedElement = v;
+    setState(() {
+      hideSettings = false;
+    });
+
+    if (v is VehicleModel){
+      print('Vehicle');
+    }
+    else if(v is SymbolModel){
+      print('Symbol');
+    }
+  }
+
+  refreshData(){
+    apiEmulator.getInterventionById().then((value) => {
+    setState(() {
+      intervention = value;
+    })
+    });
   }
 
   void startCapture(){
@@ -134,26 +188,43 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
     });
   }
 
-  void computeMarker(){
-    print("Add new marker");
+  void computeVehicleMarker(){
+    print("Add new vehicle marker");
     Map marker_values = {};
+    marker_values["label"] = _markerLabelController;
     marker_values["type"] = _markerTypeController;
-    marker_values["color"] = _markerColorController;
-    marker_values["size"] = _markerSizeController;
+    marker_values["sinisterType"] = _markerSinisterTypeController;
 
-    map_markers.add(Marker(
-      width: marker_values["size"],
-      height: marker_values["size"],
-      point: tapHistory.last,
-      builder: (ctx) =>
-          GestureDetector(
-            onTap: () {print("TAPPED : Tap on marker" );},
-              child : Container(
-            child: Icon(marker_values["type"], color: marker_values["color"], size: marker_values["size"]),
-          )),
-    ));
-    setState(() {
-      map_markers;
+    VehicleModel vm = VehicleModel(id: Random().nextInt(9999999).toString(), name: marker_values["label"], vehicleType: marker_values["type"], sinisterType: marker_values["sinisterType"], validationState: 0, latitude: tapHistory.last.latitude, longitude: tapHistory.last.longitude, departureDate: "2022-02-24", arrivedDateEst: "2022-02-24", arrivedDateReal: "2022-02-24", interventionId: intervention.id);
+
+    // Simulate push on API
+    apiEmulator.addVehicle(vm).then((value) => {
+
+      setState(() {
+        // Refresh data from API
+        refreshData();
+      })
+    });
+  }
+
+  void computeSymbolMarker(){
+    print("Add new symbol marker");
+    Map marker_values = {};
+    marker_values["label"] = _markerLabelController;
+    marker_values["type"] = _markerTypeController;
+    marker_values["sinisterType"] = _markerSinisterTypeController;
+    marker_values["size"] = _markerSizeController;
+    marker_values["rotation"] = _markerRotationController;
+
+    SymbolModel vm = SymbolModel(id: Random().nextInt(9999999).toString(), label: marker_values["label"], type: marker_values["type"], latitude: tapHistory.last.latitude, longitude: tapHistory.last.longitude, size: marker_values["size"], interventionId: intervention.id, sinisterType: marker_values["sinisterType"], orientation: marker_values["rotation"]);
+
+    // Simulate push on API
+    apiEmulator.addSymbol(vm).then((value) => {
+
+      setState(() {
+        // Refresh data from API
+        refreshData();
+      })
     });
   }
 
@@ -232,11 +303,146 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
     });
   }
 
-  openMarkerPopup(){
+  openNewMarkerPopup(){
     showDialog(context: context, builder: (BuildContext context) {
       return AlertDialog(
         scrollable: true,
-        title: Text('Ajouter un marqueur'),
+        title: Text('Ajouter'),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+            Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.directions_bus_filled),
+                tooltip: 'Ajouter un vehicule',
+                onPressed: () {
+                    print("Add vehicle");
+                    Navigator.of(context).pop();
+                    openNewVehiclePopup();
+                },
+              ),
+              Text('Vehicule')
+            ],
+          ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(Icons.edit_location),
+                      tooltip: 'Ajouter un symbole',
+                      onPressed: () {
+                        print("Add symbol");
+                        Navigator.of(context).pop();
+                        openNewSymbolPopup();
+                      },
+                    ),
+                    Text('Symbole')
+                  ],
+                )
+              ])
+        ),
+          actions: [
+            ElevatedButton(
+              child: Text("Retour"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          ]
+      );
+    });
+  }
+
+  openNewVehiclePopup(){
+    showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+        scrollable: true,
+        title: Text('Ajouter un vehicule'),
+        content: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _markerFormKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  initialValue: _markerLabelController,
+                  onChanged: (value) {
+                    _markerLabelController = value;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Label',
+                    icon: Icon(Icons.abc_rounded),
+                  ),
+                ),
+                DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Vehicle Type',
+                    icon: Icon(Icons.border_color),
+                  ),
+                  value: _markerTypeController,
+                  items: availableVehicles.map((map) {
+                    return DropdownMenuItem(
+                      child: Text(map['name']),
+                      value: map['value'],
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value != null){
+                        _markerTypeController = value as int;
+                      }
+                    });
+                  },
+                ),
+                DropdownButtonFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Sinister Type',
+                    icon: Icon(Icons.brush_rounded),
+                  ),
+                  value: _markerSinisterTypeController,
+                  items: availableSinisterType.map((map) {
+                    return DropdownMenuItem(
+                      child: Text(map['name']),
+                      value: map['value'],
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value != null){
+                        _markerSinisterTypeController = value as int;
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+              child: Text("Retour"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          ElevatedButton(
+              child: Text("Valider"),
+              onPressed: () {
+                computeVehicleMarker();
+                Navigator.of(context).pop();
+              }),
+        ],
+      );
+    });
+  }
+
+  openNewSymbolPopup(){
+    showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+        scrollable: true,
+        title: Text('Ajouter un symbole'),
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
@@ -256,9 +462,10 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                 DropdownButtonFormField(
                   decoration: const InputDecoration(
                     icon: Icon(Icons.border_color),
+                    labelText: 'Symbol Type',
                   ),
                   value: _markerTypeController,
-                  items: availableVehicles.map((map) {
+                  items: availableSymbols.map((map) {
                     return DropdownMenuItem(
                       child: Text(map['name']),
                       value: map['value'],
@@ -267,7 +474,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   onChanged: (value) {
                     setState(() {
                       if (value != null){
-                        _markerTypeController = value as IconData;
+                        _markerTypeController = value as int;
                       }
                     });
                   },
@@ -275,9 +482,10 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                 DropdownButtonFormField(
                   decoration: const InputDecoration(
                     icon: Icon(Icons.brush_rounded),
+                    labelText: 'Sinister Type',
                   ),
-                  value: _markerColorController,
-                  items: availableColors.map((map) {
+                  value: _markerSinisterTypeController,
+                  items: availableSinisterType.map((map) {
                     return DropdownMenuItem(
                       child: Text(map['name']),
                       value: map['value'],
@@ -286,7 +494,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   onChanged: (value) {
                     setState(() {
                       if (value != null){
-                        _markerColorController = value as Color;
+                        _markerSinisterTypeController = value as int;
                       }
                     });
                   },
@@ -311,7 +519,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   initialValue: _markerRotationController.toString(),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    _markerRotationController = int.parse(value);
+                    _markerRotationController = double.parse(value);
                   },
                   decoration: const InputDecoration(
                     labelText: 'Angle',
@@ -331,199 +539,246 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           ElevatedButton(
               child: Text("Valider"),
               onPressed: () {
-                computeMarker();
                 Navigator.of(context).pop();
+                computeSymbolMarker();
               }),
         ],
       );
     });
   }
 
-  getCurrentForm(){
-    return Form(
-      key: _settingsFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter a search term',
+  getCurrentForm() {
+    if (hideSettings){
+      return const Padding(
+        padding: EdgeInsets.all(15), //apply padding to all four sides
+        child: Text("Selectionner un marqueur", style: TextStyle(fontWeight: FontWeight.bold),),
+      );
+    }
+    else{
+
+      return Form(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            AppBar(
+              toolbarHeight: 40,
+              elevation: 0,
+              title: Text((lastTappedElement is VehicleModel) ? (lastTappedElement as VehicleModel).label: (lastTappedElement is SymbolModel) ? (lastTappedElement as SymbolModel).label : "No label"),
+              backgroundColor: Colors.black,
+              centerTitle: false,
+              actions: <Widget>[
+                /// Save edition
+                userEdit ? IconButton(
+                  icon: Icon(Icons.download_done),
+                  onPressed: () => {print("delete")},
+                ) : SizedBox.shrink(),
+                /// Cancel edition
+                userEdit ? IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => {
+                    print("delete"),
+                    setState(() {
+                      userEdit = false;
+                    })
+                  },
+                ): SizedBox.shrink(),
+                /// Delete element
+                userEdit ? SizedBox.shrink() : IconButton(
+                  icon: Icon(Icons.delete, color: Colors.red),
+                  onPressed: () => {
+                    print("Delete element"),
+                  },
+                ),
+                /// Hide settings
+                userEdit ? SizedBox.shrink() : IconButton(
+                  icon: Icon(Icons.cancel),
+                  onPressed: () => {
+                    print("Hide settings"),
+                    setState(() {
+                      hideSettings = true;
+                    })
+                  },
+                )
+              ],
             ),
-            // The validator receives the text that the user has entered.
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            // The validator receives the text that the user has entered.
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_settingsFormKey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content:
-                        Text('Processing Data')),
-                  );
-                }
-              },
-              child: const Text('Submit'),
+            Padding(
+              padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+              child: TextFormField(
+                onChanged: (String s) => {
+                  print(""),
+                  setState(() {
+                    userEdit = true;
+                  })
+                },
+                initialValue: (lastTappedElement is VehicleModel) ? (lastTappedElement as VehicleModel).label: (lastTappedElement is SymbolModel) ? (lastTappedElement as SymbolModel).label : "",
+                validator: (val) => 'Full name is invalid',
+                decoration: InputDecoration(
+                  labelText: 'Label',
+                  hintText: 'Label',
+                  icon: Icon(Icons.abc),
+                  isDense: true,
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+            Padding(
+              padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
+              child: TextFormField(
+                initialValue: "email",
+                validator: (val) => 'Email is invalid',
+                decoration: InputDecoration(
+                  labelText: 'Email Address',
+                  hintText: 'Enter your email',
+                  icon: Icon(Icons.email),
+                  isDense: true,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Flex(
-      direction: Axis.horizontal,
-      children: [
-        Flexible(
-          flex: leftPaneProportion,
-          child: Container(
-              color: Colors.white,
-              child: Scaffold(
-                  resizeToAvoidBottomInset: true,
-                  body: ListView(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                    children: <Widget>[
-                      GestureDetector(
-                          onTap: () {
-                            print("Click : Header");
-                          },
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.transparent,
-                            child: ListTile(
-                                title: const Text("Feu Capgemini Rennes"),
-                                subtitle: const Text("7 Rue Claude Chappe, 35510 Cesson-Sévigné"),
-                                trailing: TweenAnimationBuilder<Duration>(
-                                    duration: Duration(seconds: 86400 - interventionDuration),
-                                    tween: Tween(begin: Duration(seconds: interventionDuration), end: const Duration(seconds: 86400)),
-                                    builder: (BuildContext context, Duration value, Widget? child) {
-                                      final hours = value.inHours;
-                                      final minutes = value.inMinutes%60;
-                                      return Text((hours < 10 ? "0"+hours.toString() : hours.toString())+ ':' + (minutes < 10 ? "0"+minutes.toString() : minutes.toString()), style: const TextStyle(fontWeight: FontWeight.bold));
-                                    })),
-                          )),
-                      const Divider(color: Colors.black),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+    return FutureBuilder<InterventionModel>(
+      future: apiEmulator.getInterventionById(),
+      builder: (BuildContext context, AsyncSnapshot<InterventionModel> snapshot) {
+      if (snapshot.hasData) {
+        intervention = snapshot.data ?? InterventionModel(id: "", label: "", startDate: "", endDate: "", vehicles: [], longitude: 0.0, latitude: 0.0);
+        return Flex(
+          direction: Axis.horizontal,
+          children: [
+            Flexible(
+              flex: leftPaneProportion,
+              child: Container(
+                  color: Colors.white,
+                  child: Scaffold(
+                      resizeToAvoidBottomInset: true,
+                      body: ListView(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                         children: <Widget>[
-                        IconButton(
-                          icon: const Icon(Icons.table_chart_outlined),
-                          tooltip: 'Tableau des moyens',
-                          onPressed: () {
-                              print("Click : Tableau des moyens");
-                          },
-                        ),
-                          IconButton(
-                          icon: const Icon(Icons.airplanemode_on),
-                          tooltip: 'Vue drone',
-                          onPressed: () {
-                              print("Click : Tableau des moyens");
-                          },
-                        ),
-                          IconButton(
-                          icon: const Icon(Icons.format_list_bulleted),
-                          tooltip: 'Liste des interventions',
-                          onPressed: () {
-                              print("Click : Liste des interventions");
-                          },
-                        ),
-                          IconButton(
-                            icon: Icon(mapCapture == true ? Icons.download_done : Icons.border_color_outlined),
-                            color: mapCapture == true ? Colors.green : Colors.black,
-                            tooltip: 'Dessiner',
-                            onPressed: () {
-                              print("Click : Dessiner");
-                              if (mapCapture){
-                                stopCapture();
-                              }
-                              else{
-                                openDrawPopup();
-                              }
-                            },
-                          ),
-                          Visibility(
-                            child: IconButton(
-                              icon: Icon(Icons.delete_outlined),
-                              color: Colors.red,
-                              tooltip: 'Supprimer',
-                              onPressed: () {
-                                print("Click : Remove");
-                                if (mapCapture){
-                                  cancelCapture();
-                                }
+                          GestureDetector(
+                              onTap: () {
+                                print("Click : Header");
                               },
-                            ),
-                            visible: mapCapture,
+                              child: Card(
+                                elevation: 0,
+                                color: Colors.transparent,
+                                child: ListTile(
+                                    title: Text(intervention.label),
+                                    subtitle: const Text("7 Rue Claude Chappe, 35510 Cesson-Sévigné"),
+                                    trailing: TweenAnimationBuilder<Duration>(
+                                        duration: Duration(seconds: 86400 - interventionDuration),
+                                        tween: Tween(begin: Duration(seconds: interventionDuration), end: const Duration(seconds: 86400)),
+                                        builder: (BuildContext context, Duration value, Widget? child) {
+                                          final hours = value.inHours;
+                                          final minutes = value.inMinutes%60;
+                                          return Text((hours < 10 ? "0"+hours.toString() : hours.toString())+ ':' + (minutes < 10 ? "0"+minutes.toString() : minutes.toString()), style: const TextStyle(fontWeight: FontWeight.bold));
+                                        })),
+                              )),
+                          const Divider(color: Colors.black),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              IconButton(
+                                icon: const Icon(Icons.table_chart_outlined),
+                                tooltip: 'Tableau des moyens',
+                                onPressed: () {
+                                  print("Click : Tableau des moyens");
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.airplanemode_on),
+                                tooltip: 'Vue drone',
+                                onPressed: () {
+                                  print("Click : Tableau des moyens");
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.format_list_bulleted),
+                                tooltip: 'Liste des interventions',
+                                onPressed: () {
+                                  print("Click : Liste des interventions");
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(mapCapture == true ? Icons.download_done : Icons.border_color_outlined),
+                                color: mapCapture == true ? Colors.green : Colors.black,
+                                tooltip: 'Dessiner',
+                                onPressed: () {
+                                  print("Click : Dessiner");
+                                  if (mapCapture){
+                                    stopCapture();
+                                  }
+                                  else{
+                                    openDrawPopup();
+                                  }
+                                },
+                              ),
+                              Visibility(
+                                child: IconButton(
+                                  icon: Icon(Icons.delete_outlined),
+                                  color: Colors.red,
+                                  tooltip: 'Supprimer',
+                                  onPressed: () {
+                                    print("Click : Remove");
+                                    if (mapCapture){
+                                      cancelCapture();
+                                    }
+                                  },
+                                ),
+                                visible: mapCapture,
+                              ),
+                            ],
                           ),
+                          SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
+                          getCurrentForm()
                         ],
-                      ),
-                      const Divider(color: Colors.black),
-                      //SizedBox(height: 1, child: DecoratedBox(decoration: BoxDecoration(color: Colors.black))),
-                      GestureDetector(
-                          onTap: () {
-                            print("TAPPED : Retour");
-                          },
-                          child:
-                          Visibility(
-                            visible: false,
-                              child:Card(
-                            child: getCurrentForm(),
-                          ))),
-                    ],
-                  ))),
-        ),
-        Flexible(
-          flex: 100 - leftPaneProportion,
-          child: FlutterMap(
-            mapController: mapController,
-            options: MapOptions(
-              plugins: [],
-              center: LatLng(48.117266, -1.6777926),
-              zoom: 10,
-              onTap: _handleTap
+                      ))),
             ),
-            layers: [
-              MarkerLayerOptions(
-                  markers: map_markers
-              ),
-              PolylineLayerOptions(
-                polylines: map_displayed_polylines,
-              ),
-            ],
-            children: <Widget>[
-              TileLayerWidget(
-                options: TileLayerOptions(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
+            Flexible(
+              flex: 100 - leftPaneProportion,
+              child: FlutterMap(
+                mapController: mapController,
+                options: MapOptions(
+                    plugins: [],
+                    center: intervention.getposition(),
+                    zoom: 15,
+                    maxZoom: 18,
+                    onTap: _handleTap
                 ),
+                layers: [
+                  MarkerLayerOptions(
+                      markers: intervention.getAllMarkers(listener: markerListener)
+                  ),
+                  PolylineLayerOptions(
+                    polylines: map_displayed_polylines,
+                  ),
+                ],
+                children: <Widget>[
+                  TileLayerWidget(
+                    options: TileLayerOptions(
+                      urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: ['a', 'b', 'c'],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ],
-    );
+            ),
+          ],
+        );
+      }
+      else if (snapshot.hasError) {
+        return ErrorPage();
+      }
+      else{
+        return LoadingPage();
+      }
+        }
+
+      );
   }
 }

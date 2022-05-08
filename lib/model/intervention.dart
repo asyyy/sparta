@@ -1,5 +1,7 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:projet_groupe_c/model/symbol.dart';
+import 'package:projet_groupe_c/model/polygon.dart';
 import 'package:projet_groupe_c/model/vehicles.dart';
 
 class InterventionModel {
@@ -17,6 +19,8 @@ class InterventionModel {
   String startDate;
   String endDate;
   List<VehicleModel> vehicles;
+  List<SymbolModel> symbols = [];
+  List<PolygonModel> polygons = [];
   double longitude;
   double latitude;
 
@@ -63,9 +67,9 @@ class InterventionModel {
     var vToS = "";
     for (VehicleModel v in vehicles) {
       vToS += "name:" +
-          v.name +
+          v.label +
           "\nType de vehicule : " +
-          v.vehicleType.toString() +
+          v.type.toString() +
           "\nType de sinistre : " +
           v.sinisterType.toString() +
           "\nValidation : " +
@@ -79,16 +83,42 @@ class InterventionModel {
   }
 
   /// Get list of markers for each vehicles
-  List<Marker> getVehiclesMarkers() {
+  List<Marker> getVehiclesMarkers({listener}) {
     List<Marker> markers = [];
     for (VehicleModel v in vehicles) {
-      markers.add(v.getMarker());
+      markers.add(v.getMarker(listener: listener));
     }
     return markers;
+  }
+
+  /// Get list of markers for each marker
+  List<Marker> getSymbolsMarkers({listener}) {
+    List<Marker> tmpsymbols = [];
+    for (SymbolModel m in symbols) {
+      tmpsymbols.add(m.getMarker(listener: listener));
+    }
+    return tmpsymbols;
+  }
+
+  /// Get list of markers for each marker
+  List<Polyline> getPolygonPolyline() {
+    List<Polyline> tmpPolygons = [];
+    for (PolygonModel p in polygons) {
+      tmpPolygons.add(p.getPolyline());
+    }
+    return tmpPolygons;
   }
 
   /// Get position of intervention
   LatLng getposition() {
     return LatLng(latitude, longitude);
   }
+
+  List<Marker> getAllMarkers({listener}){
+    List<Marker> allMarkers = [];
+    allMarkers.addAll(getVehiclesMarkers(listener: listener));
+    allMarkers.addAll(getSymbolsMarkers(listener: listener));
+    return allMarkers;
+  }
+
 }

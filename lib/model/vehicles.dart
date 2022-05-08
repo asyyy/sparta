@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-import '../assets/constants.dart';
+import 'globalMarker.dart';
 
-class VehicleModel {
+class VehicleModel extends GlobalMarkerModel{
   /// Implementation of a vehicle
-  VehicleModel(
-      {required this.id,
-      required this.name,
-      required this.vehicleType,
-      required this.sinisterType,
-      required this.validationState,
-      required this.latitude,
-      required this.longitude,
-      required this.departureDate,
-      required this.arrivedDateEst,
-      required this.arrivedDateReal,
-      required this.interventionId});
-  String name;
-  String id;
-  int vehicleType;
+  VehicleModel({
+    required id,
+    required name,
+    required vehicleType,
+    required this.sinisterType,
+    required this.validationState,
+    required latitude,
+    required longitude,
+    required this.departureDate,
+    required this.arrivedDateEst,
+    required this.arrivedDateReal,
+    required interventionId
+  }):super(
+      id: id,
+      label: name,
+      type: vehicleType ,
+      latitude: latitude,
+      longitude: longitude,
+      size: 30,
+      interventionId: interventionId
+  );
   int sinisterType;
   int validationState;
-  double latitude;
-  double longitude;
   String departureDate;
   String arrivedDateEst;
   String arrivedDateReal;
-  String interventionId;
 
   /// Get position of Vehicle
   LatLng getPosition() {
@@ -35,16 +38,15 @@ class VehicleModel {
   }
 
   /// Get marker of Vehicle
-  Marker getMarker() {
+  Marker getMarker({listener}) {
     //TODO modifier avec les icones prévu
-    String icon = '';
-    switch (vehicleType) {
+    IconData icon = Icons.directions_car;
+    switch (type) {
       case 0:
-        icon = 'Camion';
+        icon = Icons.directions_car;
         break;
       case 1:
-        break;
-      case 2:
+        icon = Icons.local_shipping;
         break;
     }
     Color color = Colors.white;
@@ -53,29 +55,38 @@ class VehicleModel {
         color = Colors.red;
         break;
       case 1:
+        color = Colors.green;
         break;
       case 2:
+        color = Colors.orange;
         break;
     }
 
-    switch (validationState) {
-      case 0:
-        icon += '_req';
-        break;
-      case 1:
-        icon += '_here';
-        break;
-      case 2:
-        break;
-    }
+    // switch (validationState) {
+    //   case 0:
+    //     icon += '_req';
+    //     break;
+    //   case 1:
+    //     icon += '_here';
+    //     break;
+    //   case 2:
+    //     break;
+    // }
     //TODO : mettre le svg correspondant au path icon
-    IconData tmpIcon = new IconData(0);
+
     return Marker(
-      width: 80,
-      height: 80,
+      rotate: true,
+      width: size,
+      height: size,
       point: LatLng(latitude, longitude),
-      builder: (ctx) => Container(
-        child: Icon(tmpIcon, color: color, size: MARKER_SIZE),
+      builder: (ctx) => GestureDetector(
+        onTap: () {
+          print("Click on " + label);
+          if (listener != null){
+            listener(this);
+          }
+        },
+        child: Icon(icon, color: color, size: size),
       ),
     );
   }
@@ -95,8 +106,8 @@ class VehicleModel {
 
   /// Export InterventionModel as JSON
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "vehicleType": vehicleType,
+        "name": label,
+        "vehicleType": type,
         "sinisterType": sinisterType,
         "validationState": validationState,
         "departureDate": departureDate,
@@ -110,9 +121,9 @@ class VehicleModel {
   @override
   String toString() {
     return "Name : " +
-        name +
+        label +
         "\nType de vehicule : " +
-        vehicleType.toString() +
+        type.toString() +
         "\nType de sinistre : " +
         sinisterType.toString() +
         "\nValidation : " +
