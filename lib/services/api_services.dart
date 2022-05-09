@@ -50,7 +50,7 @@ class ApiService {
     bool tmpResult = false;
     await http
         .put(
-      Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id!),
+      Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'token': globals.token
@@ -69,7 +69,7 @@ class ApiService {
     bool tmpResult = false;
 
     await http.delete(
-        Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id!),
+        Uri.parse(ApiUrl + "/" + ApiCollection + "/" + intervention.id),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'token': globals.token

@@ -10,6 +10,8 @@ class ApiServiceEmulator {
       startDate: "10-04-2022",
       endDate: "10-04-2022",
       vehicles: [],
+      symbols: [],
+      polygons: [],
       longitude: -1.6777926,
       latitude: 48.117266);
 
@@ -19,12 +21,12 @@ class ApiServiceEmulator {
   }
 
   Future<bool> addVehicle(VehicleModel vm) async {
-    intervention.vehicles!.add(vm);
+    intervention.vehicles.add(vm);
     return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
   }
 
   Future<bool> addSymbol(SymbolModel vm) async {
-    intervention.symbols!.add(vm);
+    intervention.symbols.add(vm);
     return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
   }
 }

@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:projet_groupe_c/model/iconModel.dart';
-import 'globalMarker.dart';
 
 class VehicleModel {
   /// Implementation of a vehicle
   VehicleModel(
-      {this.id,
-      this.type,
-      this.validationState,
-      this.departureDate,
-      this.arrivedDateEst,
-      this.arrivedDateReal,
-      this.interventionId,
-      this.iconModel});
-  String? id;
-  int? type;
-  int? validationState;
-  String? departureDate;
-  String? arrivedDateEst;
-  String? arrivedDateReal;
-  String? interventionId;
-  IconModel? iconModel;
+      {required this.id,
+      required this.type,
+      required this.validationState,
+      required this.departureDate,
+      required this.arrivedDateEst,
+      required this.arrivedDateReal,
+      required this.interventionId,
+      required this.iconModel});
+  String id;
+  int type;
+  int validationState;
+  String departureDate;
+  String arrivedDateEst;
+  String arrivedDateReal;
+  String interventionId;
+  IconModel iconModel;
 
   /// Get position of Vehicle
   LatLng getPosition() {
-    return iconModel!.getposition();
+    return iconModel.getposition();
   }
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
@@ -52,14 +51,14 @@ class VehicleModel {
   @override
   String toString() {
     return "Name : " +
-        iconModel!.label! +
+        iconModel.label +
         "\nType de vehicule : " +
         type.toString() +
         "\nValidation : " +
         validationState.toString() +
         "\nLongitude : " +
-        iconModel!.longitude.toString() +
+        iconModel.longitude.toString() +
         "\nLatitude : " +
-        iconModel!.latitude.toString();
+        iconModel.latitude.toString();
   }
 }

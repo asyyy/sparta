@@ -5,25 +5,30 @@ import 'package:flutter_map/flutter_map.dart';
 
 class IconModel {
   /// Implementation of a polygon
-  IconModel({
-    this.orientation,
-    this.size,
-    this.label,
-    this.latitude,
-    this.longitude,
-  });
-  double? orientation;
-  double? size;
-  String? label;
-  double? latitude;
-  double? longitude;
+  IconModel(
+      {required this.orientation,
+      required this.size,
+      required this.label,
+      required this.latitude,
+      required this.longitude,
+      required this.color,
+      required this.iconeId});
+  double orientation;
+  double size;
+  String label;
+  double latitude;
+  double longitude;
+  Color color;
+  int iconeId;
 
   Map<String, dynamic> toJson() => {
         "orientation": orientation,
         "size": size,
         "latitude": latitude,
         "longitude": longitude,
-        "label": label
+        "label": label,
+        "color": color,
+        "iconeId": iconeId
       };
 
   /// Get marker of Vehicle
@@ -65,12 +70,12 @@ class IconModel {
 
     return Marker(
       rotate: true,
-      width: size!,
-      height: size!,
+      width: size,
+      height: size,
       point: getposition(),
       builder: (ctx) => GestureDetector(
         onTap: () {
-          print("Click on " + label!);
+          print("Click on " + label);
           if (listener != null) {
             listener(this);
           }
@@ -81,6 +86,6 @@ class IconModel {
   }
 
   LatLng getposition() {
-    return LatLng(latitude!, longitude!);
+    return LatLng(latitude, longitude);
   }
 }

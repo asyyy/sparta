@@ -5,13 +5,13 @@ import 'package:flutter_map/flutter_map.dart';
 class PolygonModel {
   /// Implementation of a polygon
   PolygonModel(
-      {this.id,
+      {required this.id,
       required this.label,
       required this.points,
       required this.color,
       required this.dotted,
       required this.interventionId});
-  String? id;
+  String id;
   String label;
   List<LatLng> points;
   Color color;

@@ -7,24 +7,24 @@ import 'package:projet_groupe_c/model/vehicles.dart';
 class InterventionModel {
   /// Implementation of an intervention
   InterventionModel(
-      {this.id,
-      this.label,
-      this.startDate,
-      this.endDate,
-      this.vehicles,
-      this.symbols,
-      this.polygons,
-      this.longitude,
-      this.latitude});
-  String? id;
-  String? label;
-  String? startDate;
-  String? endDate;
-  List<VehicleModel>? vehicles;
-  List<SymbolModel>? symbols = [];
-  List<PolygonModel>? polygons = [];
-  double? longitude;
-  double? latitude;
+      {required this.id,
+      required this.label,
+      required this.startDate,
+      required this.endDate,
+      required this.vehicles,
+      required this.symbols,
+      required this.polygons,
+      required this.longitude,
+      required this.latitude});
+  String id;
+  String label;
+  String startDate;
+  String endDate;
+  List<VehicleModel> vehicles;
+  List<SymbolModel> symbols = [];
+  List<PolygonModel> polygons = [];
+  double longitude;
+  double latitude;
 
   /// Create InterventionModel from JSON
   factory InterventionModel.fromJson(Map<String, dynamic> json) =>
@@ -44,6 +44,8 @@ class InterventionModel {
                   arrivedDateReal: json['arrivedDateReal'],
                   interventionId: json['interventionId'],
                   iconModel: json['iconModel'])),
+          symbols: [],
+          polygons: [],
           longitude: json['longitude'],
           latitude: json['latitude']);
 
@@ -53,6 +55,8 @@ class InterventionModel {
         "startDate": startDate,
         "endDate": endDate,
         "vehicles": vehiclesToJson(),
+        "symboles": symbolToJson(),
+        "polygon": polygonToJson(),
         "longitude": longitude,
         "latitude": latitude,
       };

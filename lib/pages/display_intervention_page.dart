@@ -193,7 +193,9 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         size: 30,
         label: marker_values['label'],
         latitude: tapHistory.last.latitude,
-        longitude: tapHistory.last.longitude);
+        longitude: tapHistory.last.longitude,
+        color: Color(0),
+        iconeId: 0);
     VehicleModel vm = VehicleModel(
         id: Random().nextInt(9999999).toString(),
         type: marker_values["type"],
@@ -201,7 +203,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         departureDate: "2022-02-24",
         arrivedDateEst: "2022-02-24",
         arrivedDateReal: "2022-02-24",
-        interventionId: intervention.id!,
+        interventionId: intervention.id,
         iconModel: im);
 
     // Simulate push on API
@@ -221,17 +223,19 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
     marker_values["sinisterType"] = _markerSinisterTypeController;
     marker_values["size"] = _markerSizeController;
     marker_values["rotation"] = _markerRotationController;
-
-    SymbolModel vm = SymbolModel(
-        id: Random().nextInt(9999999).toString(),
-        label: marker_values["label"],
-        type: marker_values["type"],
+    IconModel im = IconModel(
+        orientation: 0,
+        size: 30,
+        label: marker_values['label'],
         latitude: tapHistory.last.latitude,
         longitude: tapHistory.last.longitude,
-        size: marker_values["size"],
+        color: Color(0),
+        iconeId: 0);
+    SymbolModel vm = SymbolModel(
+        id: Random().nextInt(9999999).toString(),
+        type: marker_values["type"],
         interventionId: intervention.id,
-        sinisterType: marker_values["sinisterType"],
-        orientation: marker_values["rotation"]);
+        icon: im);
 
     // Simulate push on API
     apiEmulator.addSymbol(vm).then((value) => {
@@ -586,9 +590,9 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
               toolbarHeight: 40,
               elevation: 0,
               title: Text((lastTappedElement is VehicleModel)
-                  ? (lastTappedElement as VehicleModel).iconModel!.label!
+                  ? (lastTappedElement as VehicleModel).iconModel.label
                   : (lastTappedElement is SymbolModel)
-                      ? (lastTappedElement as SymbolModel).icon!.label!
+                      ? (lastTappedElement as SymbolModel).icon.label
                       : "No label"),
               backgroundColor: Colors.black,
               centerTitle: false,
@@ -648,9 +652,9 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                   })
                 },
                 initialValue: (lastTappedElement is VehicleModel)
-                    ? (lastTappedElement as VehicleModel).iconModel!.label
+                    ? (lastTappedElement as VehicleModel).iconModel.label
                     : (lastTappedElement is SymbolModel)
-                        ? (lastTappedElement as SymbolModel).icon!.label
+                        ? (lastTappedElement as SymbolModel).icon.label
                         : "",
                 validator: (val) => 'Full name is invalid',
                 decoration: InputDecoration(
@@ -694,6 +698,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                     startDate: "",
                     endDate: "",
                     vehicles: [],
+                    symbols: [],
+                    polygons: [],
                     longitude: 0.0,
                     latitude: 0.0);
             return Flex(
@@ -718,7 +724,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                                     elevation: 0,
                                     color: Colors.transparent,
                                     child: ListTile(
-                                        title: Text(intervention.label!),
+                                        title: Text(intervention.label),
                                         subtitle: const Text(
                                             "7 Rue Claude Chappe, 35510 Cesson-Sévigné"),
                                         trailing: TweenAnimationBuilder<
