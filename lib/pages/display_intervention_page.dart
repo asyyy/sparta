@@ -194,8 +194,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         label: marker_values['label'],
         latitude: tapHistory.last.latitude,
         longitude: tapHistory.last.longitude,
-        color: Color(0),
-        iconeId: 0);
+        color: Colors.red,
+        iconId: 0);
     VehicleModel vm = VehicleModel(
         id: Random().nextInt(9999999).toString(),
         type: marker_values["type"],
@@ -230,7 +230,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         latitude: tapHistory.last.latitude,
         longitude: tapHistory.last.longitude,
         color: Color(0),
-        iconeId: 0);
+        iconId: 0);
     SymbolModel vm = SymbolModel(
         id: Random().nextInt(9999999).toString(),
         type: marker_values["type"],
@@ -837,8 +837,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                         onTap: _handleTap),
                     layers: [
                       MarkerLayerOptions(
-                          markers: intervention.getAllMarkers(
-                              listener: markerListener)),
+                          markers: intervention.getAllMarkers(listener: markerListener)),
                       PolylineLayerOptions(
                         polylines: map_displayed_polylines,
                       ),

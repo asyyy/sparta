@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:projet_groupe_c/model/iconModel.dart';
 
 class VehicleModel {
@@ -25,7 +23,7 @@ class VehicleModel {
 
   /// Get position of Vehicle
   LatLng getPosition() {
-    return iconModel.getposition();
+    return iconModel.getPosition();
   }
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(

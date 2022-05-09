@@ -12,14 +12,14 @@ class IconModel {
       required this.latitude,
       required this.longitude,
       required this.color,
-      required this.iconeId});
+      required this.iconId});
   double orientation;
   double size;
   String label;
   double latitude;
   double longitude;
   Color color;
-  int iconeId;
+  int iconId;
 
   Map<String, dynamic> toJson() => {
         "orientation": orientation,
@@ -28,51 +28,19 @@ class IconModel {
         "longitude": longitude,
         "label": label,
         "color": color,
-        "iconeId": iconeId
+        "iconId": iconId
       };
 
   /// Get marker of Vehicle
   Marker getMarker({listener}) {
     //TODO modifier avec les icones prévu
     IconData icon = Icons.directions_car;
-    switch (listener.type) {
-      case 0:
-        icon = Icons.directions_car;
-        break;
-      case 1:
-        icon = Icons.local_shipping;
-        break;
-    }
-    Color color = Colors.white;
-    switch (listener.sinisterType) {
-      case 0:
-        color = Colors.red;
-        break;
-      case 1:
-        color = Colors.green;
-        break;
-      case 2:
-        color = Colors.orange;
-        break;
-    }
-
-    // switch (validationState) {
-    //   case 0:
-    //     icon += '_req';
-    //     break;
-    //   case 1:
-    //     icon += '_here';
-    //     break;
-    //   case 2:
-    //     break;
-    // }
-    //TODO : mettre le svg correspondant au path icon
 
     return Marker(
       rotate: true,
       width: size,
       height: size,
-      point: getposition(),
+      point: getPosition(),
       builder: (ctx) => GestureDetector(
         onTap: () {
           print("Click on " + label);
@@ -85,7 +53,7 @@ class IconModel {
     );
   }
 
-  LatLng getposition() {
+  LatLng getPosition() {
     return LatLng(latitude, longitude);
   }
 }
