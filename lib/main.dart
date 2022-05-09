@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projet_groupe_c/pages/list_intervention_page.dart';
-import 'package:projet_groupe_c/pages/login_page.dart';
-import 'package:projet_groupe_c/pages/new_intervention_page.dart';
+import 'package:projet_groupe_c/pages/display_intervention_page.dart';
 import 'globals.dart' as globals;
 
-void main() async {
+void main() async{
   globals.token = '';
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
   runApp(const MyApp());
 }
 
@@ -16,14 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     return MaterialApp(
       title: 'Flutter app',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ListIntervention(),
+      home: SafeArea(child: DisplayIntervention()),
     );
   }
 }
