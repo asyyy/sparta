@@ -200,7 +200,7 @@ class _ListInterventionState extends State<ListIntervention> {
                          padding: const EdgeInsets.all(20.0),
                          child: ListTile(
                            selected: position == _selected,
-                           leading: Icon(Icons.fire_truck),
+                           leading: Icon(Icons.local_fire_department),
                            title: Text(interventions[position].label),
                            subtitle: Row(
                                children: [
