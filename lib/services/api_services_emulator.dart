@@ -9,9 +9,6 @@ class ApiServiceEmulator {
       label: "Feu Capgemini Rennes",
       startDate: "10-04-2022",
       endDate: "10-04-2022",
-      vehicles: [],
-      symbols: [],
-      polygons: [],
       longitude: -1.6777926,
       latitude: 48.117266);
 

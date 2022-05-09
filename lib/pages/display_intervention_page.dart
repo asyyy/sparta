@@ -697,9 +697,6 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                     label: "",
                     startDate: "",
                     endDate: "",
-                    vehicles: [],
-                    symbols: [],
-                    polygons: [],
                     longitude: 0.0,
                     latitude: 0.0);
             return Flex(
