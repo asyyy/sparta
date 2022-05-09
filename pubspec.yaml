@@ -41,6 +41,7 @@ dependencies:
   geocoding: ^2.0.4
   crypt: ^4.2.1
   geolocator: ^8.2.1
+  flutter_svg: ^1.0.3
 
 
 
