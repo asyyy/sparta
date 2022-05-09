@@ -11,8 +11,8 @@ class InterventionsService {
   
   static List<InterventionModel> getInterventionsFromJSON(json){
   List<InterventionModel> interventions = [];
-  for(var d in json){
-    interventions.add(InterventionModel.fromJson(d));
+  for(int i = 0; i < json.length ; i++ ) {
+    interventions.add(InterventionModel.fromJson(json[i]));
   }
   return interventions;
 }
@@ -20,7 +20,7 @@ class InterventionsService {
 List<Marker> getMarkersFromInterventions(List<InterventionModel> interventions) {
   List<Marker> markers = [];
   for(InterventionModel intervention in interventions){
-    markers.addAll(intervention.getVehiclesMarkers());
+   // markers.addAll(intervention.getVehiclesMarkers());
   }
   return markers;
 }
@@ -43,6 +43,12 @@ List<Marker> getMarkersFromInterventions(List<InterventionModel> interventions) 
       },
     );
   }
+/*  static Future getInterventionVehicles(String id)
+  {
+    return http.get(
+      Uri.
+    )*/
+  //}
 
   static Future<bool> postIntervention(InterventionModel intervention) async {
     bool tmpResult = false;

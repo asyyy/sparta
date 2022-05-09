@@ -1,6 +1,7 @@
-import 'package:flutter_map/flutter_map.dart';
+
 import 'package:latlong2/latlong.dart';
 import 'package:projet_groupe_c/model/vehicles.dart';
+
 
 class InterventionModel {
   /// Implementation of an intervention
@@ -8,17 +9,23 @@ class InterventionModel {
       {required this.id,
       required this.label,
       required this.startDate,
-      required this.endDate,
-      required this.vehicles,
+      this.vehicles,
       required this.longitude,
-      required this.latitude});
+      required this.latitude,
+        this.endDate,
+        this.adress,
+        this.version
+      });
+  String? adress;
   String id;
   String label;
   String startDate;
-  String endDate;
-  List<VehicleModel> vehicles;
+  String? endDate;
+  List<VehicleModel>? vehicles;
   double longitude;
   double latitude;
+  int? version;
+
 
   /// Create InterventionModel from JSON
   factory InterventionModel.fromJson(Map<String, dynamic> json) =>
@@ -41,8 +48,11 @@ class InterventionModel {
                   interventionId: json['interventionId'],
                   longitude: json['longitude'],
                   latitude: json['latitude'])),
-          longitude: json['longitude'],
-          latitude: json['latitude']);
+
+          adress: json['labelAddress'],
+          longitude: double.parse(json['longitude']),
+          latitude: double.parse(json['latitude']),
+          version: json["_v"]);
 
   /// Export InterventionModel as JSON
   Map<String, dynamic> toJson() => {
@@ -55,13 +65,20 @@ class InterventionModel {
       };
 
   List<Map<String, dynamic>> vehiclesToJson() {
-    return List.generate(vehicles.length, (index) => vehicles[index].toJson());
+    final vehicles = this.vehicles;
+    if(vehicles != null){
+      return List.generate(vehicles.length, (index) => vehicles[index].toJson());
+    }
+    else{
+      return [];
+    }
+
   }
 
   /// Return InterventionModel as String
   String vehiclesToString() {
     var vToS = "";
-    for (VehicleModel v in vehicles) {
+    for (VehicleModel v in vehicles!) {
       vToS += "name:" +
           v.name +
           "\nType de vehicule : " +
@@ -78,17 +95,20 @@ class InterventionModel {
     return vToS;
   }
 
-  /// Get list of markers for each vehicles
+/*  /// Get list of markers for each vehicles
   List<Marker> getVehiclesMarkers() {
     List<Marker> markers = [];
     for (VehicleModel v in vehicles) {
       markers.add(v.getMarker());
     }
     return markers;
-  }
+  }*/
 
   /// Get position of intervention
   LatLng getposition() {
     return LatLng(latitude, longitude);
   }
 }
+
+
+
