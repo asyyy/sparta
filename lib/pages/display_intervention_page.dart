@@ -698,7 +698,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                     startDate: "",
                     endDate: "",
                     longitude: 0.0,
-                    latitude: 0.0);
+                    latitude: 0.0,
+                    sinisterType: '');
             return Flex(
               direction: Axis.horizontal,
               children: [
@@ -858,7 +859,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           } else if (snapshot.hasError) {
             return ErrorPage();
           } else {
-            return LoadingPage();
+            return const LoadingPage(id: '',);
           }
         });
   }
