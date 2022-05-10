@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 
 enum iconEnum{
+  UNKNOWN,
   ACT_CENTER,
   ACT_ZONE,
   AIR_MEANS,
@@ -404,6 +405,9 @@ extension iconEnumExtension on iconEnum{
         break;
       case iconEnum.VLCG_PLANNED:
         path = path + "VLCGPlanned.svg";
+        break;
+      case iconEnum.UNKNOWN:
+        // TODO: Handle this case.
         break;
     }
     return path;

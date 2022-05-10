@@ -28,6 +28,15 @@ class Mapper {
     });
   }
 
+  findIconById(int id){
+    print(iconEnum.CRM_FULL.index);
+    iconEnum.values[26];
+      return iconEnum.values[id];
+  }
+  findIdofIcon(iconEnum i){
+    return i.index;
+  }
+
   findValidationVehiclesByKey(String id) {
     validationsVehicles.keys.firstWhere(
         (element) => validationsVehicles[element] == id,
