@@ -1,8 +1,10 @@
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:projet_groupe_c/model/symbol.dart';
 import 'package:projet_groupe_c/model/polygon.dart';
 import 'package:projet_groupe_c/model/vehicles.dart';
+
 
 class InterventionModel {
   /// Implementation of an intervention
@@ -10,18 +12,26 @@ class InterventionModel {
       {required this.id,
       required this.label,
       required this.startDate,
-      required this.endDate,
+     // required this.vehicles,
       required this.longitude,
-      required this.latitude});
+      required this.latitude,
+      required this.sinisterType,
+        this.endDate,
+        this.adress,
+        this.version
+      });
+  String? adress;
   String id;
+  String sinisterType;
   String label;
   String startDate;
-  String endDate;
+  String? endDate;
   List<VehicleModel> vehicles = [];
   List<SymbolModel> symbols = [];
   List<PolygonModel> polygons = [];
   double longitude;
   double latitude;
+  int? version;
 
   /// Create InterventionModel from JSON
   factory InterventionModel.fromJson(Map<String, dynamic> json) =>
@@ -30,21 +40,25 @@ class InterventionModel {
           label: json['label'],
           startDate: json['startDate'],
           endDate: json['endDate'],
-          // vehicles: List.generate(
-          //     json['vehicles'].length,
-          //     (index) => VehicleModel(
-          //         id: json["_id"],
-          //         type: json["type"],
-          //         validationState: json['validationState'],
-          //         departureDate: json['departureDate'],
-          //         arrivedDateEst: json['arrivedDateEst'],
-          //         arrivedDateReal: json['arrivedDateReal'],
-          //         interventionId: json['interventionId'],
-          //         iconModel: json['iconModel'])),
-          // symbols: [],
-          // polygons: [],
-          longitude: json['longitude'],
-          latitude: json['latitude']);
+          sinisterType: json['sinisterType'],
+           /* vehicles: List.generate(
+               json['vehicles'].length,
+               (index) => VehicleModel(
+                   id: json["_id"],
+                   name: json['name'],
+                   sinisterType: json['sinisterType'],
+                   vehicleType: json['vehicleType'],
+                   validationState: json['validationState'],
+                   departureDate: json['departureDate'],
+                   arrivedDateEst: json['arrivedDateEst'],
+                   arrivedDateReal: json['arrivedDateReal'],
+                   interventionId: json['interventionId'],
+                   longitude: json['longitude'],
+                   latitude: json['latitude'])),*/
+          adress: json['labelAddress'],
+          longitude: double.parse(json['longitude']),
+          latitude: double.parse(json['latitude']),
+          version: json["_v"]);
 
   /// Export InterventionModel as JSON
   Map<String, dynamic> toJson() => {
@@ -52,6 +66,7 @@ class InterventionModel {
         "startDate": startDate,
         "endDate": endDate,
         "vehicles": vehiclesToJson(),
+        "sinisterType" : sinisterType,
         "symboles": symbolToJson(),
         "polygon": polygonToJson(),
         "longitude": longitude,
