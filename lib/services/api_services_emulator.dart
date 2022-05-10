@@ -10,7 +10,8 @@ class ApiServiceEmulator {
       startDate: "10-04-2022",
       endDate: "10-04-2022",
       longitude: -1.6777926,
-      latitude: 48.117266);
+      latitude: 48.117266,
+      sinisterType: 'INC');
 
   Future<InterventionModel> getInterventionById() async {
     return Future.delayed(Duration(milliseconds: 500))

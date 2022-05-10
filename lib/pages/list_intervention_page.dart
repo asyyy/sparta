@@ -31,6 +31,7 @@ class _ListInterventionState extends State<ListIntervention> {
   late List<InterventionModel> interventions = [];
   late int _selected = -1;
   List<Marker> mapMarkers = [];
+  Mapper mapper = Mapper();
 
 
    _getPosition() {
@@ -198,8 +199,35 @@ class _ListInterventionState extends State<ListIntervention> {
                          padding: const EdgeInsets.all(20.0),
                          child: ListTile(
                            selected: position == _selected,
-                           leading: Icon(Icons.local_fire_department),
-                           title: Text(interventions[position].label),
+                           leading: const Icon(Icons.local_fire_department),
+                           title: Row(
+                             children: [
+                               Padding(
+                                 padding: const EdgeInsets.all(0.0),
+                                 child: Column(
+                                   children: [
+                                     Text(interventions[position].label),
+                                   ],
+                                 ),
+                               ),
+                               Padding(
+                                 padding: const EdgeInsets.all(12.0),
+                                 child: Column(
+                                   children: [
+                                     Text(mapper.sinisterTypes.keys.firstWhere((element) => mapper.sinisterTypes[element] == interventions[position].sinisterType, orElse: () => "No id found")),
+                                   ],
+                                 ),
+                               ),
+                               Padding(
+                                 padding: const EdgeInsets.all(12.0),
+                                 child: Column(
+                                   children:[
+                                     (interventions[position].endDate != null) ? const Text("En cours") : const Text("Terminé"),
+                                   ]
+                                 ),
+                               ),
+                             ],
+                           ),
                            subtitle: Row(
                                children: [
                                  Text(interventions[position].startDate),

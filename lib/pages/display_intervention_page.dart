@@ -207,12 +207,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         iconModel: im);
 
     // Simulate push on API
-    apiEmulator.addVehicle(vm).then((value) => {
-          setState(() {
+    //apiEmulator.addVehicle(vm).then((value) => {
+      //    setState(() {
             // Refresh data from API
-            refreshData();
-          })
-        });
+        //    refreshData();
+         // })
+        //});
   }
 
   void computeSymbolMarker() {
@@ -238,12 +238,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         icon: im);
 
     // Simulate push on API
-    apiEmulator.addSymbol(vm).then((value) => {
-          setState(() {
+    //apiEmulator.addSymbol(vm).then((value) => {
+      //    setState(() {
             // Refresh data from API
-            refreshData();
-          })
-        });
+        //    refreshData();
+          //})
+        //});
   }
 
   openDrawPopup() {
@@ -698,7 +698,8 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
                     startDate: "",
                     endDate: "",
                     longitude: 0.0,
-                    latitude: 0.0);
+                    latitude: 0.0,
+                    sinisterType: '');
             return Flex(
               direction: Axis.horizontal,
               children: [
@@ -858,7 +859,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           } else if (snapshot.hasError) {
             return ErrorPage();
           } else {
-            return ErrorPage();
+            return const LoadingPage(id: '',);
           }
         });
   }
