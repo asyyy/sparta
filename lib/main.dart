@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/pages/display_intervention_page.dart';
+import 'package:projet_groupe_c/services/api_services.dart';
 import 'globals.dart' as globals;
 
-void main() async{
+void main() async {
   globals.token = '';
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeRight]);
   runApp(const MyApp());
 }
 
