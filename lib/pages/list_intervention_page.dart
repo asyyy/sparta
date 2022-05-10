@@ -217,8 +217,7 @@ class _ListInterventionState extends State<ListIntervention> {
                                  padding: const EdgeInsets.all(12.0),
                                  child: Column(
                                    children: [
-                                     Text(mapper.sinisterTypes.keys.firstWhere((element)
-                                     => mapper.sinisterTypes[element] == interventions[position].sinisterType, orElse: () => "No id found")),
+                                     Text(mapper.sinisterTypes.keys.firstWhere((element) => mapper.sinisterTypes[element] == interventions[position].sinisterType, orElse: () => "No id found")),
                                    ],
                                  ),
                                ),
