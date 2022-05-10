@@ -858,7 +858,7 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
           } else if (snapshot.hasError) {
             return ErrorPage();
           } else {
-            return LoadingPage();
+            return ErrorPage();
           }
         });
   }

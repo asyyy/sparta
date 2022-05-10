@@ -17,13 +17,13 @@ class ApiServiceEmulator {
         .then((onValue) => intervention);
   }
 
-  // Future<bool> addVehicle(VehicleModel vm) async {
-  //   intervention.vehicles.add(vm);
-  //   return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
-  // }
+  Future<bool> addVehicle(VehicleModel vm) async {
+    intervention.vehicles.add(vm);
+    return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
+  }
 
-  // Future<bool> addSymbol(SymbolModel vm) async {
-  //   intervention.symbols.add(vm);
-  //   return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
-  // }
+  Future<bool> addSymbol(SymbolModel vm) async {
+    intervention.symbols.add(vm);
+    return Future.delayed(Duration(milliseconds: 500)).then((onValue) => true);
+  }
 }

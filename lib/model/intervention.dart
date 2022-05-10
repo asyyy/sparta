@@ -1,4 +1,5 @@
 
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:projet_groupe_c/model/symbol.dart';
 import 'package:projet_groupe_c/model/polygon.dart';
@@ -11,7 +12,6 @@ class InterventionModel {
       {required this.id,
       required this.label,
       required this.startDate,
-      this.vehicles,
       required this.longitude,
       required this.latitude,
         this.endDate,
@@ -22,7 +22,6 @@ class InterventionModel {
   String id;
   String label;
   String startDate;
-  String endDate;
   List<VehicleModel> vehicles = [];
   List<SymbolModel> symbols = [];
   List<PolygonModel> polygons = [];

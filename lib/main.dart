@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projet_groupe_c/pages/display_intervention_page.dart';
+import 'package:projet_groupe_c/pages/list_intervention_page.dart';
 import 'package:projet_groupe_c/services/api_services.dart';
 import 'globals.dart' as globals;
 
@@ -8,7 +9,7 @@ void main() async {
   globals.token = '';
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeRight]);
+      [DeviceOrientation.landscapeLeft]);
   runApp(const MyApp());
 }
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SafeArea(child: DisplayIntervention()),
+      home: ListIntervention(),
     );
   }
 }
