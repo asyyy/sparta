@@ -12,6 +12,7 @@ import 'package:projet_groupe_c/assets/constants.dart';
 import 'package:projet_groupe_c/pages/loading_page.dart';
 import 'package:projet_groupe_c/pages/login_page.dart';
 import 'package:projet_groupe_c/pages/new_intervention_page.dart';
+import '../model/Mapper.dart';
 import '../services/geoloc_services.dart';
 import '../services/interventions_service.dart';
 import '../model/intervention.dart';
@@ -33,6 +34,7 @@ class _ListInterventionState extends State<ListIntervention> {
   late List<InterventionModel> interventions = [];
   late int _selected = -1;
   List<Marker> mapMarkers = [];
+  Mapper mapper = Mapper();
 
    _getPosition() {
      GeoLoc.getCurrentPosition().then((response) {
@@ -215,7 +217,8 @@ class _ListInterventionState extends State<ListIntervention> {
                                  padding: const EdgeInsets.all(12.0),
                                  child: Column(
                                    children: [
-                                     Text(interventions[position].sinisterType),
+                                     Text(mapper.sinisterTypes.keys.firstWhere((element)
+                                     => mapper.sinisterTypes[element] == interventions[position].sinisterType, orElse: () => "No id found")),
                                    ],
                                  ),
                                ),
