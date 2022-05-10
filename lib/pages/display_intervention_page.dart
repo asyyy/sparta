@@ -207,12 +207,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         iconModel: im);
 
     // Simulate push on API
-    apiEmulator.addVehicle(vm).then((value) => {
-          setState(() {
+    //apiEmulator.addVehicle(vm).then((value) => {
+      //    setState(() {
             // Refresh data from API
-            refreshData();
-          })
-        });
+        //    refreshData();
+         // })
+        //});
   }
 
   void computeSymbolMarker() {
@@ -238,12 +238,12 @@ class _DisplayInterventionState extends State<DisplayIntervention> {
         icon: im);
 
     // Simulate push on API
-    apiEmulator.addSymbol(vm).then((value) => {
-          setState(() {
+    //apiEmulator.addSymbol(vm).then((value) => {
+      //    setState(() {
             // Refresh data from API
-            refreshData();
-          })
-        });
+        //    refreshData();
+          //})
+        //});
   }
 
   openDrawPopup() {
