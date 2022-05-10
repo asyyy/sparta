@@ -100,7 +100,6 @@ class _ListInterventionState extends State<ListIntervention> {
             },
           ),
         ),
-        IconButton(icon: const Icon(Icons.add), onPressed: () => Mapper()),
       ],
     );
     mapController = MapController();
